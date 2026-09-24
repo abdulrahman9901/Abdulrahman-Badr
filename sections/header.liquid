@@ -1,10 +1,10 @@
 
 
 {% liquid
-  assign order = 'logo,menu,localization,search,drawer_search,actions'
+  assign order = 'logo,promo_message,menu,localization,search,drawer_search,actions'
 
   if shop.customer_accounts_enabled
-    assign order = 'drawer_search,logo,menu,localization,search,actions'
+    assign order = 'drawer_search,logo,promo_message,menu,localization,search,actions'
   endif
 
   assign rows = 'top,bottom' | split: ','
@@ -84,9 +84,20 @@
     content_for 'block', type: '_header-logo', id: 'header-logo'
   endcapture
 
+  capture promo_message
+    assign center_text = section.settings.promo_message | default: 'Find the ideal gift for your loved ones.'
+    if center_text != blank
+      echo '<div class="header__promo-message">'
+      echo center_text
+      echo '</div>'
+    endif
+  endcapture
+
+  {% comment %}
   capture menu
     content_for 'block', type: '_header-menu', id: 'header-menu'
   endcapture
+  {% endcomment %}
 
   capture drawer_menu
     content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'mobile'
@@ -133,9 +144,11 @@
       endif
     endif
   endif
+  {% comment %}
   capture search
     render 'search', style: search_style, class: search_class, display_style: section.settings.actions_display_style
   endcapture
+  {% endcomment %}
 
   # Skip drawer search under specific conditions:
   # Always render if search_row is bottom
@@ -450,6 +463,7 @@
         settings: section.settings,
         first: first,
         logo: logo,
+        promo_message: promo_message,
         menu: menu,
         actions: actions,
         localization: localization_markup,
@@ -1249,6 +1263,12 @@
   "tag": "header",
   "class": "header-section",
   "settings": [
+    {
+      "type": "text",
+      "id": "promo_message",
+      "label": "Center Promotional Message",
+      "default": "Find the ideal gift for your loved ones."
+    },
     {
       "type": "header",
       "content": "t:content.logo"

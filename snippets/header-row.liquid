@@ -33,6 +33,8 @@
     case item
       when 'actions'
         assign item_column = 'right'
+      when 'promo_message'
+        assign item_column = 'center'
     endcase
 
     if item_row == row
@@ -76,6 +78,8 @@
               {{ first }}
             {% when 'logo' %}
               {{ logo }}
+            {% when 'promo_message' %}
+              {{ promo_message }}
             {% when 'menu' %}
               {{ menu }}
             {% when 'localization' %}

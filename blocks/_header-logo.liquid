@@ -57,12 +57,14 @@
     {% endif %}
     data-testid="header-logo"
   >
+    {% assign brand_title = block.settings.custom_logo_text | default: 'TISSO VISON' %}
+
     {% render 'image',
       image: settings.logo,
       class: 'header-logo__image',
       height: settings.logo_height,
       alt_text_fallback: alt_text_fallback,
-      text_fallback: shop.name,
+      text_fallback: brand_title,
       style: logo_style
     %}
   </span>
@@ -77,7 +79,7 @@
         class: 'header-logo__image',
         height: settings.logo_height,
         alt_text_fallback: alt_text_fallback,
-        text_fallback: shop.name,
+        text_fallback: brand_title,
         style: inverse_logo_style
       %}
     </span>
@@ -88,14 +90,19 @@
   .header-logo {
     display: flex;
     height: 100%;
-    font-size: var(--font-size--md);
-    font-family: var(--font-family);
-    font-weight: var(--font-weight);
-    font-style: var(--font-style);
+    font-size: 19px;
+    font-family: var(--font-heading--family, var(--font-body--family));
+    font-weight: 700;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--color-foreground);
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-decoration: none;
+    line-height: 1;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
 
     &[data-hidden-on-home-page] {
       display: none;
@@ -111,6 +118,7 @@
 
     @media screen and (max-width: 749px) {
       padding: 0;
+      font-size: 16px;
     }
 
     @media screen and (min-width: 750px) {
@@ -118,6 +126,7 @@
     }
 
     &:hover {
+      opacity: 0.85;
       text-decoration: none;
     }
   }
@@ -151,6 +160,13 @@
     {
       "type": "paragraph",
       "content": "t:content.edit_logo_in_theme_settings"
+    },
+    {
+      "type": "text",
+      "id": "custom_logo_text",
+      "label": "Brand Name",
+      "default": "TISSO VISON",
+      "info": "Custom text for the brand logo"
     },
     {
       "type": "header",

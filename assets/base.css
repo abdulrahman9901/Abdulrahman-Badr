@@ -1845,13 +1845,17 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  width: 207px;
+  height: 44px;
+  flex: none;
+  flex-grow: 0;
+  box-sizing: border-box;
   font-family: inherit;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   text-decoration: none;
-  padding: 10px 22px;
   line-height: 1;
   white-space: nowrap;
   border: none;
@@ -1890,4 +1894,30 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .tisso-btn:hover .tisso-btn__arrow {
   transform: translateX(4px);
 }
+
+/* ==========================================================================
+   TISSO VISON Header Center Promotional Message
+   ========================================================================== */
+.header__promo-message {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-foreground);
+  text-align: center;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 989px) {
+  .header__promo-message {
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .header__promo-message {
+    display: none;
+  }
+}
+
 
