@@ -84,14 +84,6 @@
     content_for 'block', type: '_header-logo', id: 'header-logo'
   endcapture
 
-  capture promo_message
-    assign center_text = section.settings.promo_message | default: 'Find the ideal gift for your loved ones.'
-    if center_text != blank
-      echo '<div class="header__promo-message">'
-      echo center_text
-      echo '</div>'
-    endif
-  endcapture
 
   {% comment %}
   capture menu

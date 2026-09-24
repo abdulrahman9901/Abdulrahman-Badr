@@ -14,85 +14,17 @@
   @param {string} [drawer_search] - Captured HTML for drawer-based search
 {% enddoc %}
 
-{%- liquid
-  assign order = order | split: ','
-  assign left = ''
-  assign center = ''
-  assign right = ''
+<div class="header__column header__column--left" data-testid="header-{{ row }}-left">
+  {{ logo }}
+</div>
 
-  if first != blank
-    assign left = 'first '
-  endif
+<div class="header__column header__column--center" data-testid="header-{{ row }}-center">
+  <div class="header__promo-message">
+    {{ settings.promo_message | default: 'Find the ideal gift for your loved ones.' }}
+  </div>
+</div>
 
-  for item in order
-    assign column_key = item | append: '_position'
-    assign row_key = item | append: '_row'
-    assign item_row = settings[row_key] | default: 'top'
-    assign item_column = settings[column_key] | default: 'left'
+<div class="header__column header__column--right" data-testid="header-{{ row }}-right">
+  {{ actions }}
+</div>
 
-    case item
-      when 'actions'
-        assign item_column = 'right'
-      when 'promo_message'
-        assign item_column = 'center'
-    endcase
-
-    if item_row == row
-      case item_column
-        when 'left'
-          assign left = left | append: item | append: ' '
-        when 'center'
-          assign center = center | append: item | append: ' '
-        else
-          assign right = right | append: item | append: ' '
-      endcase
-    endif
-  endfor
-
-  assign columns = 'left,center,right' | split: ','
--%}
-
-{%- for column in columns -%}
-  {%- capture items_for_column -%}
-    {% case column %}
-      {% when 'left' %}
-        {{ left }}
-      {% when 'center' %}
-        {{ center }}
-      {% else %}
-        {{ right }}
-    {% endcase %}
-  {%- endcapture -%}
-
-  {%- assign items_array = items_for_column | strip | split: ' ' | compact -%}
-
-  {%- if items_array.size > 0 -%}
-    <div
-      class="header__column header__column--{{ column }}"
-      data-testid="header-{{ row }}-{{ column }}"
-    >
-      {% for key in items_array %}
-        {% unless key == blank %}
-          {% case key %}
-            {% when 'first' %}
-              {{ first }}
-            {% when 'logo' %}
-              {{ logo }}
-            {% when 'promo_message' %}
-              {{ promo_message }}
-            {% when 'menu' %}
-              {{ menu }}
-            {% when 'localization' %}
-              {{ localization }}
-            {% when 'search' %}
-              {{ search }}
-            {% when 'drawer_search' %}
-              {{ drawer_search }}
-            {% when 'actions' %}
-              {{ actions }}
-          {% endcase %}
-        {% endunless %}
-      {% endfor %}
-    </div>
-  {%- endif -%}
-{%- endfor -%}
