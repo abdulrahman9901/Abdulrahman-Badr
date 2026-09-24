@@ -1,0 +1,19 @@
+{%- doc -%}
+  Renders the signature TISSO VISON arrow button with variants.
+  @param {string} label - Button text (e.g. 'CHOOSE GIFT', 'SHOP NOW')
+  @param {string} url - Link destination
+  @param {string} [variant] - 'yellow' (default) or 'black'
+  @param {string} [extra_classes] - Optional additional CSS classes
+{%- enddoc -%}
+
+<a
+  href="{{ url | default: '#gift-guide' }}"
+  class="tisso-btn tisso-btn--{{ variant | default: 'yellow' }} {{ extra_classes }}"
+>
+  <span class="tisso-btn__label">{{ label }}</span>
+  <span class="tisso-btn__arrow" aria-hidden="true">
+    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 1L15 6M15 6L10 11M15 6H1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+</a>

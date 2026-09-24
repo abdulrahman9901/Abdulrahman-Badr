@@ -102,7 +102,7 @@
   endif
 
   capture actions
-    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
+    render 'custom-arrow-button', label: 'CHOOSE GIFT', url: '#gift-guide', variant: 'yellow' 
   endcapture
 
   if shop.customer_accounts_enabled

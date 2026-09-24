@@ -1836,3 +1836,58 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     margin-top: calc(var(--header-height) * var(--transparent-header-offset-boolean) * -1);
   }
 }
+
+/* ==========================================================================
+   TISSO VISON Signature Arrow Button Component
+   ========================================================================== */
+.tisso-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  padding: 10px 22px;
+  line-height: 1;
+  white-space: nowrap;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.tisso-btn--yellow {
+  background-color: #FFF200;
+  color: #000000;
+}
+
+.tisso-btn--yellow:hover {
+  background-color: #f2e300;
+  color: #000000;
+}
+
+.tisso-btn--black {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.tisso-btn--black:hover {
+  background-color: #222222;
+  color: #ffffff;
+}
+
+.tisso-btn__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.tisso-btn:hover .tisso-btn__arrow {
+  transform: translateX(4px);
+}
+
