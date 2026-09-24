@@ -1920,4 +1920,19 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   }
 }
 
+/* ==========================================================================
+   TISSO VISON: Hide residual announcement bar and navigation menus
+   ========================================================================== */
+.announcement-bar,
+.header-announcements,
+.header__drawer,
+.header-menu,
+.menu-list,
+#header-component .header__drawer,
+#header-component .header-menu,
+#header-component .menu-list {
+  display: none !important;
+}
+
+
 

@@ -1,5 +1,6 @@
 
 
+{% comment %}
 {% if section.blocks.size > 1 %}
   <script
     src="{{ 'announcement-bar.js' | asset_url }}"
@@ -39,6 +40,7 @@
     </div>
   </announcement-bar-component>
 </aside>
+{% endcomment %}
 
 {% stylesheet %}
   .announcement-bar {

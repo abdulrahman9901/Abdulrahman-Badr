@@ -99,6 +99,7 @@
   endcapture
   {% endcomment %}
 
+  {% comment %}
   capture drawer_menu
     content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'mobile'
   endcapture
@@ -111,6 +112,7 @@
   if navigation_bar contains 'data-navigation-bar-enabled'
     assign has_navigation_bar = true
   endif
+  {% endcomment %}
 
   capture actions
     render 'custom-arrow-button', label: 'CHOOSE GIFT', url: '#gift-guide', variant: 'yellow' 
@@ -410,7 +412,7 @@
 
       case row
         when 'top'
-          assign first = drawer_menu
+          assign first = ''
 
           if bottom_row_blocks.size > 0 and section.settings.divider_size == 'page-width'
             assign class = class | append: ' divider--page-width'
