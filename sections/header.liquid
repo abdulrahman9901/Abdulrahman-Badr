@@ -174,33 +174,33 @@
     assign show_country = false
   endif
 
-  assign bottom_row_blocks = ''
+  assign bottom_row_blocks_string = ''
 
   if section.settings.menu_row == 'bottom'
-    assign bottom_row_blocks = bottom_row_blocks | append: 'menu,'
+    assign bottom_row_blocks_string = bottom_row_blocks_string | append: 'menu,'
   endif
 
   if section.settings.show_search
     if section.settings.search_row == 'bottom'
-      assign bottom_row_blocks = bottom_row_blocks | append: 'search,'
+      assign bottom_row_blocks_string = bottom_row_blocks_string | append: 'search,'
     endif
   endif
 
   if section.settings.show_country or section.settings.show_language
     if section.settings.localization_row == 'bottom'
-      assign bottom_row_blocks = bottom_row_blocks | append: 'localization,'
+      assign bottom_row_blocks_string = bottom_row_blocks_string | append: 'localization,'
     endif
   endif
 
-  assign bottom_row_blocks = bottom_row_blocks | split: ',' | compact
-
   assign has_second_row = false
-  if bottom_row_blocks.size > 0
+  if bottom_row_blocks_string != ''
     assign has_second_row = true
     assign rows = 'top,bottom' | split: ','
   else
     assign rows = 'top' | split: ','
   endif
+
+  assign bottom_row_blocks = bottom_row_blocks_string | split: ',' | compact
 
   if section.settings.section_height == 'compact'
     assign header_height_class = ' header--compact'
