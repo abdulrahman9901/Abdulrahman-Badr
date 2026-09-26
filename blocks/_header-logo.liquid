@@ -28,67 +28,45 @@
   based on the .header[transparent] selector
 {% endcomment %}
 <a
-  {% if template.name == 'index' and block_settings.hide_logo_on_home_page %}
-    data-hidden-on-home-page
-  {% endif %}
   href="{{ routes.root_url }}"
-  class="size-style spacing-style header-logo"
+  class="size-style spacing-style header-logo tisso-logo"
   style="
     {% render 'size-style', settings: block_settings %}
     {% render 'spacing-style', settings: block_settings %}
     --font-family: var(--font-body--family);
     --font-style: var(--font-body--style);
-    --font-weight: 600;
+    --font-weight: 700;
   "
   {{ block.shopify_attributes }}
 >
   {% liquid
     assign logo_width = settings.logo_height | times: settings.logo.aspect_ratio | ceil
     assign logo_width_mobile = settings.logo_height_mobile | times: settings.logo.aspect_ratio | ceil
-    assign inverse_logo_width = settings.logo_height | times: inverse_logo.aspect_ratio | ceil
-    assign inverse_logo_width_mobile = settings.logo_height_mobile | times: inverse_logo.aspect_ratio | ceil
     assign logo_style = '--header-logo-image-width: ' | append: logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
-    assign inverse_logo_style = '--header-logo-image-width: ' | append: inverse_logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: inverse_logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
   %}
 
   <span
-    {% if use_inverse_logo %}
-      class="header-logo__solid-header-image-container"
-    {% endif %}
     data-testid="header-logo"
+    style="display: flex; align-items: center;"
   >
-    {% assign brand_title = block.settings.custom_logo_text | default: 'TISSO VISON' %}
-
-    {% render 'image',
-      image: settings.logo,
-      class: 'header-logo__image',
-      height: settings.logo_height,
-      alt_text_fallback: alt_text_fallback,
-      text_fallback: brand_title,
-      style: logo_style
-    %}
-  </span>
-
-  {% if use_inverse_logo %}
-    <span
-      class="header-logo__transparent-header-image-container"
-      data-testid="header-logo-inverse"
-    >
+    {% if settings.logo != blank %}
       {% render 'image',
-        image: inverse_logo,
+        image: settings.logo,
         class: 'header-logo__image',
         height: settings.logo_height,
         alt_text_fallback: alt_text_fallback,
-        text_fallback: brand_title,
-        style: inverse_logo_style
+        text_fallback: 'TISSO VISON',
+        style: logo_style
       %}
-    </span>
-  {% endif %}
+    {% else %}
+      {{ block.settings.custom_logo_text | default: 'TISSO VISON' }}
+    {% endif %}
+  </span>
 </a>
 
 {% stylesheet %}
   .header-logo {
-    display: flex;
+    display: flex !important;
     height: 100%;
     font-size: 19px;
     font-family: var(--font-heading--family, var(--font-body--family));
@@ -96,25 +74,15 @@
     font-style: normal;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-foreground);
+    color: var(--color-foreground) !important;
     justify-content: flex-start;
     align-items: center;
-    text-decoration: none;
+    text-decoration: none !important;
     line-height: 1;
     white-space: nowrap;
+    opacity: 1 !important;
+    visibility: visible !important;
     transition: opacity 0.2s ease;
-
-    &[data-hidden-on-home-page] {
-      display: none;
-
-      #header-component:is(
-          [sticky='always']:not([data-scroll-direction='none']),
-          [sticky='scroll-up'][data-scroll-direction='up']
-        )
-        & {
-        display: flex;
-      }
-    }
 
     @media screen and (max-width: 749px) {
       padding: 0;

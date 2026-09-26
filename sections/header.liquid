@@ -7,7 +7,7 @@
     assign order = 'drawer_search,logo,promo_message,menu,localization,search,actions'
   endif
 
-  assign rows = 'top,bottom' | split: ','
+  assign rows = 'top' | split: ','
   assign search_style = 'none'
 
   if section.settings.show_search
@@ -85,26 +85,10 @@
   endcapture
 
 
-  {% comment %}
-  capture menu
-    content_for 'block', type: '_header-menu', id: 'header-menu'
-  endcapture
-  {% endcomment %}
-
-  {% comment %}
-  capture drawer_menu
-    content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'mobile'
-  endcapture
-
-  capture navigation_bar
-    content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
-  endcapture
-
+  assign menu = ''
+  assign drawer_menu = ''
+  assign navigation_bar = ''
   assign has_navigation_bar = false
-  if navigation_bar contains 'data-navigation-bar-enabled'
-    assign has_navigation_bar = true
-  endif
-  {% endcomment %}
 
   capture actions
     render 'custom-arrow-button', label: 'CHOOSE GIFT', url: '#gift-guide', variant: 'yellow' 
@@ -138,11 +122,7 @@
       endif
     endif
   endif
-  {% comment %}
-  capture search
-    render 'search', style: search_style, class: search_class, display_style: section.settings.actions_display_style
-  endcapture
-  {% endcomment %}
+  assign search = ''
 
   # Skip drawer search under specific conditions:
   # Always render if search_row is bottom

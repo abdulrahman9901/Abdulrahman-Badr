@@ -14,17 +14,25 @@
   @param {string} [drawer_search] - Captured HTML for drawer-based search
 {% enddoc %}
 
-<div class="header__column header__column--left" data-testid="header-{{ row }}-left">
-  {{ logo }}
-</div>
-
-<div class="header__column header__column--center" data-testid="header-{{ row }}-center">
-  <div class="header__promo-message">
-    {{ settings.promo_message | default: 'Find the ideal gift for your loved ones.' }}
+{%- if row == 'top' -%}
+  <div class="header__column header__column--left" data-testid="header-top-left">
+    <a href="{{ routes.root_url }}" class="header-logo tisso-logo" style="text-decoration: none;">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: height: 36 | image_tag: class: 'header-logo__image', alt: shop.name }}
+      {%- else -%}
+        TISSO VISON
+      {%- endif -%}
+    </a>
   </div>
-</div>
 
-<div class="header__column header__column--right" data-testid="header-{{ row }}-right">
-  {{ actions }}
-</div>
+  <div class="header__column header__column--center" data-testid="header-top-center">
+    <div class="header__promo-message">
+      {{ settings.promo_message | default: 'Find the ideal gift for your loved ones.' }}
+    </div>
+  </div>
+
+  <div class="header__column header__column--right" data-testid="header-top-right">
+    {{ actions }}
+  </div>
+{%- endif -%}
 

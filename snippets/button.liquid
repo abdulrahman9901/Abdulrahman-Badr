@@ -22,6 +22,7 @@
     size-style
     {{ block_settings.style_class }}
     {{ block_settings.style_class }}--{{ block.id }}
+    {% if block_settings.label contains 'SHOP NOW' or block_settings.label contains 'BUY NOW' or block_settings.label contains 'CHOOSE GIFT' %}tisso-btn tisso-btn--black{% endif %}
   "
   style="{% render 'size-style', settings: block_settings %}"
   {%- if block_settings.open_in_new_tab -%}
@@ -30,5 +31,12 @@
   {%- endif -%}
   {{ block.shopify_attributes }}
 >
-  {{ block_settings.label }}
+  <span class="button__label">{{ block_settings.label }}</span>
+  {%- if block_settings.label contains 'SHOP NOW' or block_settings.label contains 'BUY NOW' or block_settings.label contains 'CHOOSE GIFT' or block_settings.show_arrow -%}
+    <span class="tisso-btn__arrow" aria-hidden="true" style="display: inline-flex; align-items: center; margin-inline-start: 8px;">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 1L15 6M15 6L10 11M15 6H1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  {%- endif -%}
 </a>
