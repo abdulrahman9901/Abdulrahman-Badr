@@ -1941,8 +1941,9 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   text-decoration: none !important;
 }
 
-/* Ensure only a single top row is displayed */
-.header__row--bottom {
+/* Ensure only a single top row is displayed when no second row is active */
+#header-component[data-header-rows="single"] .header__row--bottom,
+.header__row--bottom:empty {
   display: none !important;
 }
 

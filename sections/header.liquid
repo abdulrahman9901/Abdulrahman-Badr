@@ -7,7 +7,7 @@
     assign order = 'drawer_search,logo,promo_message,menu,localization,search,actions'
   endif
 
-  assign rows = 'top,bottom' | split: ','
+  assign rows = 'top' | split: ','
   assign search_style = 'none'
 
   if section.settings.show_search
@@ -197,6 +197,9 @@
   assign has_second_row = false
   if bottom_row_blocks.size > 0
     assign has_second_row = true
+    assign rows = 'top,bottom' | split: ','
+  else
+    assign rows = 'top' | split: ','
   endif
 
   if section.settings.section_height == 'compact'
@@ -462,7 +465,6 @@
         settings: section.settings,
         first: first,
         logo: logo,
-        promo_message: promo_message,
         menu: menu,
         actions: actions,
         localization: localization_markup,
