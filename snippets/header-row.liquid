@@ -14,25 +14,91 @@
   @param {string} [drawer_search] - Captured HTML for drawer-based search
 {% enddoc %}
 
-{%- if row == 'top' -%}
-  <div class="header__column header__column--left" data-testid="header-top-left">
-    <a href="{{ routes.root_url }}" class="header-logo tisso-logo" style="text-decoration: none;">
-      {%- if settings.logo != blank -%}
-        {{ settings.logo | image_url: height: 36 | image_tag: class: 'header-logo__image', alt: shop.name }}
-      {%- else -%}
-        TISSO VISON
-      {%- endif -%}
-    </a>
-  </div>
+{%- liquid
+  assign order = order | split: ','
+  assign left = ''
+  assign center = ''
+  assign right = ''
 
-  <div class="header__column header__column--center" data-testid="header-top-center">
-    <div class="header__promo-message">
-      {{ settings.promo_message | default: 'Find the ideal gift for your loved ones.' }}
+  if first != blank
+    assign left = 'first '
+  endif
+
+  for item in order
+    assign column_key = item | append: '_position'
+    assign row_key = item | append: '_row'
+    assign item_row = settings[row_key] | default: 'top'
+    assign item_column = settings[column_key] | default: 'left'
+
+    case item
+      when 'promo_message'
+        assign item_column = settings.promo_message_position | default: 'center'
+        assign item_row = settings.promo_message_row | default: 'top'
+      when 'actions'
+        assign item_column = 'right'
+    endcase
+
+    if item_row == row
+      case item_column
+        when 'left'
+          assign left = left | append: item | append: ' '
+        when 'center'
+          assign center = center | append: item | append: ' '
+        else
+          assign right = right | append: item | append: ' '
+      endcase
+    endif
+  endfor
+
+  assign columns = 'left,center,right' | split: ','
+-%}
+
+{%- for column in columns -%}
+  {%- capture items_for_column -%}
+    {% case column %}
+      {% when 'left' %}
+        {{ left }}
+      {% when 'center' %}
+        {{ center }}
+      {% else %}
+        {{ right }}
+    {% endcase %}
+  {%- endcapture -%}
+
+  {%- assign items_array = items_for_column | strip | split: ' ' | compact -%}
+
+  {%- if items_array.size > 0 -%}
+    <div
+      class="header__column header__column--{{ column }}"
+      data-testid="header-{{ row }}-{{ column }}"
+    >
+      {% for key in items_array %}
+        {% unless key == blank %}
+          {% case key %}
+            {% when 'first' %}
+              {{ first }}
+            {% when 'logo' %}
+              {{ logo }}
+            {% when 'promo_message' %}
+              {%- if settings.promo_message != blank and settings.show_promo_message != false -%}
+                <div class="header__promo-message">
+                  {{ settings.promo_message }}
+                </div>
+              {%- endif -%}
+            {% when 'menu' %}
+              {{ menu }}
+            {% when 'localization' %}
+              {{ localization }}
+            {% when 'search' %}
+              {{ search }}
+            {% when 'drawer_search' %}
+              {{ drawer_search }}
+            {% when 'actions' %}
+              {{ actions }}
+          {% endcase %}
+        {% endunless %}
+      {% endfor %}
     </div>
-  </div>
-
-  <div class="header__column header__column--right" data-testid="header-top-right">
-    {{ actions }}
-  </div>
-{%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
 

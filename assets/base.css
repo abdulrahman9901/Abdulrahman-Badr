@@ -1891,7 +1891,8 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   transition: transform 0.2s ease;
 }
 
-.tisso-btn:hover .tisso-btn__arrow {
+.tisso-btn:hover .tisso-btn__arrow,
+.has-arrow:hover .tisso-btn__arrow {
   transform: translateX(4px);
 }
 
