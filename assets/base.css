@@ -1836,3 +1836,195 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     margin-top: calc(var(--header-height) * var(--transparent-header-offset-boolean) * -1);
   }
 }
+
+/* ==========================================================================
+   TISSO VISON Signature Arrow Button Component
+   ========================================================================== */
+.tisso-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 220px;
+  height: 50px;
+  flex: none;
+  flex-grow: 0;
+  box-sizing: border-box;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  line-height: 20px;
+  white-space: nowrap;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: background-position 1s ease-in-out, color 1s ease-in-out, opacity 0.2s ease !important;
+}
+
+.tisso-btn--yellow {
+  background-image: linear-gradient(to right, #000000 50%, #FFF200 50%);
+  color: #000000;
+}
+
+.tisso-btn--yellow:hover {
+  background-position: left bottom;
+  color: white;
+}
+
+.tisso-btn--black {
+  background-image: linear-gradient(to right, #FFF200 50%, #000000 50%);
+  color: #ffffff;
+}
+
+.tisso-btn--black:hover {
+  background-position: left bottom;
+  color: black;
+}
+
+.tisso-btn__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.tisso-btn:hover .tisso-btn__arrow {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   TISSO VISON Header Center Promotional Message & Responsive Layout
+   ========================================================================== */
+.header__promo-message {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-foreground, #000000);
+  text-align: center;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 989px) {
+  .header__promo-message {
+    font-size: 13px;
+  }
+}
+
+/* ==========================================================================
+   TISSO VISON Header Brand Logo & Single Header Row Guarantee
+   ========================================================================== */
+.tisso-logo,
+.header-logo {
+  display: flex !important;
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #000000 !important;
+  text-decoration: none !important;
+  align-items: center;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.tisso-logo:hover,
+.header-logo:hover {
+  opacity: 0.85 !important;
+  text-decoration: none !important;
+}
+
+/* Ensure only a single top row is displayed when no second row is active */
+#header-component[data-header-rows="single"] .header__row--bottom,
+.header__row--bottom:empty {
+  display: none !important;
+}
+
+/* Three-column desktop layout */
+@media screen and (min-width: 750px) {
+  #header-component .header__columns {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  #header-component .header__column--left {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+  }
+
+  #header-component .header__column--center {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  #header-component .header__column--right {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+  }
+}
+
+/* Mobile responsive stacked layout (matching Figma Mobile design) */
+@media screen and (max-width: 749px) {
+  #header-component .header__row--top {
+    padding-block: 16px !important;
+    padding-inline: 16px !important;
+  }
+
+  #header-component[data-menu-style='drawer'] .header__columns,
+  #header-component .header__columns {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    grid-template-rows: 1fr !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 0 !important;
+    width: 100% !important;
+  }
+
+  #header-component .header__column {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  #header-component .header__promo-message {
+    display: block !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    color: #000000 !important;
+  }
+
+  #header-component .header__column--right .tisso-btn {
+    width: 100% !important;
+    max-width: 320px !important;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  header-actions {
+    display: none !important;
+  }
+}
+
+/* Custom Header Height */
+.header__row.header__row--top {
+  height: 64px !important;
+  min-height: 64px !important;
+  max-height: 64px !important;
+}
