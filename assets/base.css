@@ -1893,7 +1893,8 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   transition: transform 0.2s ease;
 }
 
-.tisso-btn:hover .tisso-btn__arrow {
+.tisso-btn:hover .tisso-btn__arrow,
+.has-arrow:hover .tisso-btn__arrow {
   transform: translateX(4px);
 }
 
@@ -2016,19 +2017,6 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   }
 }
 
-@media screen and (max-width: 749px) {
-  header-actions {
-    display: none !important;
-  }
-}
-
-/* Custom Header Height */
-.header__row.header__row--top {
-  height: 64px !important;
-  min-height: 64px !important;
-  max-height: 64px !important;
-}
-
 /* ==========================================================================
    TISSO VISON Hero Section & Banner Styling
    ========================================================================== */
@@ -2070,4 +2058,141 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   max-width: 483px;
   display: flex;
   align-items: center;
+}
+
+@media screen and (max-width: 749px) {
+  header-actions {
+    display: none !important;
+  }
+}
+
+/* Custom Product Card Styles matching Figma 433x444 */
+.product-card {
+  aspect-ratio: 433 / 444 !important;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.product-card .product-card__content {
+  height: 100%;
+  width: 100%;
+}
+
+.product-card-gallery {
+  height: 100% !important;
+}
+
+/* Custom Header Height */
+.header__row.header__row--top {
+  height: 64px !important;
+  min-height: 64px !important;
+  max-height: 64px !important;
+}
+
+/* Quick Add Modal Restructure - Figma Match */
+.quick-add-modal__content .product-information__media {
+  width: 120px !important;
+  height: 140px !important;
+  min-width: 120px !important;
+  flex: none !important;
+  position: relative !important;
+}
+
+.quick-add-modal__content .product-information__media media-gallery,
+.quick-add-modal__content .product-information__media .product-media-container,
+.quick-add-modal__content .product-information__media img {
+  width: 120px !important;
+  height: 140px !important;
+  max-width: 120px !important;
+  max-height: 140px !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+}
+
+/* Hide Quantity Selector and Accelerated Checkout in Quick Add */
+.quick-add-modal .quantity-selector-wrapper,
+.quick-add-modal .accelerated-checkout-block {
+  display: none !important;
+}
+
+.quick-add-modal .tisso-btn {
+  width: 100% !important;
+}
+
+/* Color Variant Swatch Strap Layout (Figma) */
+.product-form__input:has(.variant-option__button-label--has-swatch) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  border: none !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  width: 100% !important;
+  margin-bottom: 20px !important;
+}
+
+.product-form__input:has(.variant-option__button-label--has-swatch) legend {
+  width: 100% !important;
+  margin-bottom: 8px !important;
+  font-family: inherit !important;
+  font-size: 16px !important;
+  color: #333 !important;
+}
+
+.variant-option__button-label--has-swatch {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  height: 48px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-top: 1px solid #000 !important;
+  border-bottom: 1px solid #000 !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+}
+
+.variant-option__button-label--has-swatch:first-of-type {
+  border-left: 1px solid #000 !important;
+}
+
+.variant-option__button-label--has-swatch:last-of-type {
+  border-right: 1px solid #000 !important;
+}
+
+/* Thick black divider between swatches */
+.variant-option__button-label--has-swatch:not(:last-of-type) {
+  border-right: 3px solid #000 !important;
+}
+
+.variant-option__button-label--has-swatch input[type="radio"] {
+  display: none !important;
+}
+
+/* The vertical color strap */
+.variant-option__button-label--has-swatch .swatch {
+  width: 12px !important;
+  height: 100% !important;
+  min-height: 48px !important;
+  border-radius: 0 !important;
+  border: none !important;
+  margin-right: 15px !important;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1) !important;
+  display: block !important;
+}
+
+/* The text next to the strap */
+.variant-option__button-label--has-swatch .variant-option__button-label__text {
+  font-family: inherit !important;
+  font-size: 18px !important;
+  color: #000 !important;
+  line-height: 1 !important;
+}
+
+/* Active State */
+.variant-option__button-label--has-swatch:has(input[type="radio"]:checked) {
+  background-color: #f9f9f9 !important;
 }

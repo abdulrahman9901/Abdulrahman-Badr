@@ -148,6 +148,7 @@
                     variant_image: featured_media,
                     mode: 'unscaled'
                   %}
+                  <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
                 {% else %}
                   {% if product_option_value.available == true %}
                     <span
