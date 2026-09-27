@@ -327,7 +327,15 @@
   {{ media_slot_2 }}
 
   {% if media_count == 0 %}
-    {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media' }}
+    <img
+      src="{{ 'Hero banner.png' | asset_url }}"
+      alt="The Gift Guide"
+      class="hero__media hero__media--default-banner"
+      loading="eager"
+      fetchpriority="high"
+      width="2880"
+      height="1560"
+    >
   {%- endif -%}
 {% endcapture %}
 
@@ -359,7 +367,14 @@
     }}
   {% endif %}
   {% if media_count == 0 %}
-    {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media' }}
+    <img
+      src="{{ 'Hero banner.png' | asset_url }}"
+      alt=""
+      class="hero__media hero__media--default-banner"
+      loading="lazy"
+      width="2880"
+      height="1560"
+    >
   {% endif %}
 {% endcapture %}
 
@@ -443,7 +458,14 @@
             }}
         {% endif %}
         {% if media_count == 0 %}
-          {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media' }}
+          <img
+            src="{{ 'Hero banner.png' | asset_url }}"
+            alt=""
+            class="hero__media hero__media--default-banner"
+            loading="lazy"
+            width="2880"
+            height="1560"
+          >
         {% endif %}
       {% endif %}
     {% endif %}

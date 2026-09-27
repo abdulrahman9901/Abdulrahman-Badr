@@ -2028,3 +2028,46 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   min-height: 64px !important;
   max-height: 64px !important;
 }
+
+/* ==========================================================================
+   TISSO VISON Hero Section & Banner Styling
+   ========================================================================== */
+.hero__media--default-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right top;
+  background-color: #ffffff;
+}
+
+.hero {
+  background-color: #F5F5F5;
+}
+
+.hero .hero__content-wrapper {
+  max-width: 1200px;
+  z-index: 2;
+}
+
+.hero h2 {
+  font-family: 'Jost', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 70px !important;
+  line-height: 100% !important;
+  color: #000000 !important;
+  letter-spacing: -0.02em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.hero p {
+  font-family: 'Jost', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  line-height: 140% !important;
+  color: #000000 !important;
+  max-width: 483px;
+  display: flex;
+  align-items: center;
+}
