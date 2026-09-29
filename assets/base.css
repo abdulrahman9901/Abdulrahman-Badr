@@ -3289,3 +3289,127 @@ fieldset.variant-option--swatches legend {
 .quick-add-modal__content product-inventory {
   display: none !important;
 }
+
+/* ==========================================================================
+   Tisso vison in the wild - Product Hotspot Trigger Positions (Figma Match)
+   ========================================================================== */
+.product-card .quick-add {
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+}
+
+.product-card button.quick-add__button {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: absolute !important;
+  transform: translate(-50%, -50%) !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+  cursor: pointer !important;
+  z-index: 10 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+@media screen and (min-width: 750px) {
+  .product-card button.quick-add__button {
+    opacity: 1 !important;
+    display: flex !important;
+  }
+}
+
+.product-card button.quick-add__button:hover {
+  transform: translate(-50%, -50%) scale(1.15) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35) !important;
+}
+
+.product-card button.quick-add__button .svg-wrapper,
+.product-card button.quick-add__button .add-to-cart-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.product-card button.quick-add__button svg {
+  width: 24px !important;
+  height: 24px !important;
+  display: block !important;
+}
+
+/* 1. Black Leather Bag */
+product-card[data-product-id="10610836734136"] button.quick-add__button,
+product-card:has(a[href*="black-leather-bag"]) button.quick-add__button {
+  top: 56.0% !important;
+  left: 61.3% !important;
+  right: auto !important;
+  bottom: auto !important;
+  inset-inline-end: auto !important;
+  inset-block-end: auto !important;
+}
+
+/* 2. Blue Silk Tuxedo */
+product-card[data-product-id="10610836406456"] button.quick-add__button,
+product-card:has(a[href*="blue-silk-tuxedo"]) button.quick-add__button {
+  top: 52.2% !important;
+  left: 84.3% !important;
+  right: auto !important;
+  bottom: auto !important;
+  inset-inline-end: auto !important;
+  inset-block-end: auto !important;
+}
+
+/* 3. Chequered Red Shirt */
+product-card[data-product-id="10610836570296"] button.quick-add__button,
+product-card:has(a[href*="chequered-red-shirt"]) button.quick-add__button {
+  top: 20.9% !important;
+  left: 62.6% !important;
+  right: auto !important;
+  bottom: auto !important;
+  inset-inline-end: auto !important;
+  inset-block-end: auto !important;
+}
+
+/* 4. Classic Leather Jacket */
+product-card[data-product-id="10610837029048"] button.quick-add__button,
+product-card:has(a[href*="classic-leather-jacket"]) button.quick-add__button {
+  top: 18.6% !important;
+  left: 72.0% !important;
+  right: auto !important;
+  bottom: auto !important;
+  inset-inline-end: auto !important;
+  inset-block-end: auto !important;
+}
+
+/* 5. Classic Varsity Top */
+product-card[data-product-id="10610837192888"] button.quick-add__button,
+product-card:has(a[href*="classic-varsity-top"]) button.quick-add__button {
+  top: 26.0% !important;
+  left: 51.3% !important;
+  right: auto !important;
+  bottom: auto !important;
+  inset-inline-end: auto !important;
+  inset-block-end: auto !important;
+}
+
+/* 6. Dark Denim Top */
+product-card[data-product-id="10610836930744"] button.quick-add__button,
+product-card:has(a[href*="dark-denim-top"]) button.quick-add__button {
+  top: 39.4% !important;
+  left: 76.0% !important;
+  right: auto !important;
+  bottom: auto !important;
+  inset-inline-end: auto !important;
+  inset-block-end: auto !important;
+}
