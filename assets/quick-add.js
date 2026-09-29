@@ -297,7 +297,106 @@ export class QuickAddComponent extends Component {
     morph(modalContent, productGrid);
 
     this.#setupTissoButton(modalContent);
+    this.#setupModalVariantPicker(modalContent);
     this.#syncVariantSelection(modalContent);
+  }
+
+  /**
+   * Sets up variant picker options inside the quick-add modal:
+   * - Adds text labels to color swatches if needed
+   * - Converts Size options into a Figma dropdown (Component 213)
+   * @param {Element} container - The container element
+   */
+  #setupModalVariantPicker(container) {
+    if (!container) return;
+
+    // 1. Swatches: Ensure variant label text is displayed inside the button label
+    container.querySelectorAll('.variant-option__button-label--has-swatch').forEach((label) => {
+      if (!label.querySelector('.variant-option__button-label__text')) {
+        const input = label.querySelector('input');
+        if (input && input.value) {
+          const textSpan = document.createElement('span');
+          textSpan.className = 'variant-option__button-label__text';
+          textSpan.textContent = input.value;
+          label.appendChild(textSpan);
+        }
+      }
+    });
+
+    // 2. Size: Convert size fieldset into a clean dropdown
+    const sizeFieldset = Array.from(container.querySelectorAll('fieldset.variant-option')).find((fs) => {
+      const legend = fs.querySelector('legend');
+      return legend && legend.textContent.trim().toLowerCase().includes('size');
+    });
+
+    if (sizeFieldset && !sizeFieldset.classList.contains('variant-option--size-dropdown-initialized')) {
+      sizeFieldset.classList.add('variant-option--size-dropdown-initialized');
+
+      const legendText = sizeFieldset.querySelector('legend')?.childNodes[0]?.textContent?.trim() || 'Size';
+      const radioInputs = Array.from(sizeFieldset.querySelectorAll('input[type="radio"]'));
+
+      if (radioInputs.length > 0) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'variant-option variant-option--dropdowns variant-option--size-dropdown';
+        wrapper.dataset.componentId = '213';
+
+        const label = document.createElement('label');
+        label.textContent = legendText;
+        wrapper.appendChild(label);
+
+        const selectWrapper = document.createElement('div');
+        selectWrapper.className = 'variant-option__select-wrapper';
+
+        const select = document.createElement('select');
+        select.className = 'variant-option__select';
+        select.name = radioInputs[0].name;
+
+        const defaultOpt = document.createElement('option');
+        defaultOpt.value = '';
+        defaultOpt.disabled = true;
+        defaultOpt.textContent = 'Choose your size';
+        select.appendChild(defaultOpt);
+
+        let hasSelected = false;
+        radioInputs.forEach((radio) => {
+          const opt = document.createElement('option');
+          opt.value = radio.value;
+          opt.textContent = radio.value;
+          if (radio.checked) {
+            opt.selected = true;
+            hasSelected = true;
+          }
+          select.appendChild(opt);
+        });
+
+        if (!hasSelected) {
+          defaultOpt.selected = true;
+        }
+
+        select.addEventListener('change', () => {
+          const chosenRadio = radioInputs.find((r) => r.value === select.value);
+          if (chosenRadio) {
+            chosenRadio.checked = true;
+            chosenRadio.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+
+        const caretBox = document.createElement('div');
+        caretBox.className = 'variant-option__caret-box';
+        caretBox.innerHTML = `
+          <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 0-.708" fill="currentColor"/>
+          </svg>
+        `;
+
+        selectWrapper.appendChild(select);
+        selectWrapper.appendChild(caretBox);
+        wrapper.appendChild(selectWrapper);
+
+        sizeFieldset.style.display = 'none';
+        sizeFieldset.parentNode.insertBefore(wrapper, sizeFieldset);
+      }
+    }
   }
 
   /**

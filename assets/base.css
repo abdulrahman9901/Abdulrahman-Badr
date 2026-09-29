@@ -3475,3 +3475,7 @@ details[open] .header-drawer-icon--close {
     inset-block-end: auto !important;
   }
 }
+
+.shopify-section-group-footer-group {
+  display: none !important;
+}
