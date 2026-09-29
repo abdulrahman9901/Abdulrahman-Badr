@@ -2701,87 +2701,6 @@ details[open] .header-drawer-icon--close {
   width: 100% !important;
 }
 
-/* Color Variant Swatch Strap Layout (Figma) */
-.product-form__input:has(.variant-option__button-label--has-swatch),
-.variant-option:has(.variant-option__button-label--has-swatch),
-fieldset.variant-option--swatches {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  border: none !important;
-  padding: 0 !important;
-  gap: 0 !important;
-  width: 100% !important;
-  margin-bottom: 20px !important;
-}
-
-.product-form__input:has(.variant-option__button-label--has-swatch) legend,
-.variant-option:has(.variant-option__button-label--has-swatch) legend,
-fieldset.variant-option--swatches legend {
-  width: 100% !important;
-  margin-bottom: 8px !important;
-  font-family: inherit !important;
-  font-size: 16px !important;
-  color: #333 !important;
-}
-
-.variant-option__button-label--has-swatch {
-  flex: 1 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  height: 48px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-  border-top: 1px solid #000 !important;
-  border-bottom: 1px solid #000 !important;
-  background: transparent !important;
-  cursor: pointer !important;
-  box-shadow: none !important;
-}
-
-.variant-option__button-label--has-swatch:first-of-type {
-  border-left: 1px solid #000 !important;
-}
-
-.variant-option__button-label--has-swatch:last-of-type {
-  border-right: 1px solid #000 !important;
-}
-
-/* Thick black divider between swatches */
-.variant-option__button-label--has-swatch:not(:last-of-type) {
-  border-right: 3px solid #000 !important;
-}
-
-.variant-option__button-label--has-swatch input[type="radio"] {
-  display: none !important;
-}
-
-/* The vertical color strap */
-.variant-option__button-label--has-swatch .swatch {
-  width: 12px !important;
-  height: 100% !important;
-  min-height: 48px !important;
-  border-radius: 0 !important;
-  border: none !important;
-  margin-right: 15px !important;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1) !important;
-  display: block !important;
-}
-
-/* The text next to the strap */
-.variant-option__button-label--has-swatch .variant-option__button-label__text {
-  font-family: inherit !important;
-  font-size: 18px !important;
-  color: #000 !important;
-  line-height: 1 !important;
-}
-
-/* Active State */
-.variant-option__button-label--has-swatch:has(input[type="radio"]:checked) {
-  background-color: #f9f9f9 !important;
-}
-
 /* ==========================================================================
    Quick Add Modal (Figma Frame 1000009751 & Component 213)
    ========================================================================== */
@@ -2826,8 +2745,6 @@ fieldset.variant-option--swatches legend {
 /* Close button "X" */
 .quick-add-modal__close {
   position: absolute !important;
-  top: 14px !important;
-  right: 14px !important;
   z-index: 10 !important;
   cursor: pointer !important;
   background: transparent !important;
@@ -2844,6 +2761,7 @@ fieldset.variant-option--swatches legend {
   gap: 14px !important;
   width: 100% !important;
   margin-bottom: 14px !important;
+  padding-right: 20px !important;
 }
 
 .quick-add-modal__content .product-header-row .product-information__media {
@@ -2918,11 +2836,12 @@ fieldset.variant-option--swatches legend {
   font-weight: 500 !important;
   color: #000000 !important;
   text-decoration: none !important;
-  line-height: 1.25 !important;
+  line-height: 1.3 !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+  padding-top: 2px !important;
 }
 
 .quick-add-modal__content .product-title-price product-price {
@@ -3024,16 +2943,32 @@ fieldset.variant-option--swatches legend {
   margin: 0 !important;
 }
 
-/* Connect the two buttons side by side with shared divider border */
-.quick-add-modal__content .variant-option__button-label:nth-of-type(2),
-.quick-add-modal__content .variant-option__button-label + .variant-option__button-label {
+/* Connect buttons in 2-column grid seamlessly */
+.quick-add-modal__content .variant-option__button-label:nth-of-type(even) {
   border-left: none !important;
 }
 
-.quick-add-modal__content .variant-option__button-label:has(input:checked) {
-  border-color: #000000 !important;
-  font-weight: 500 !important;
-  z-index: 2 !important;
+.quick-add-modal__content .variant-option__button-label:nth-of-type(n+3) {
+  border-top: none !important;
+}
+
+/* Center text for non-swatch button options (like Size: XS, S, M, L) */
+.quick-add-modal__content .variant-option:not(:has(.swatch)) .variant-option__button-label {
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+.quick-add-modal__content .variant-option:not(:has(.swatch)) .variant-option__button-label__text {
+  text-align: center !important;
+  width: 100% !important;
+}
+
+/* Variant Option Label: Transitions */
+.quick-add-modal__content .variant-option__button-label,
+.quick-add-modal__content .variant-option__button-label--has-swatch,
+.quick-add-modal__content .variant-option__button-label__text {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
 }
 
 .quick-add-modal__content .variant-option__button-label__pill {
@@ -3050,8 +2985,32 @@ fieldset.variant-option--swatches legend {
   text-align: start !important;
 }
 
-.quick-add-modal__content .variant-option__button-label:has(input:checked) .variant-option__button-label__text {
+/* Variant Option Label: Both Hover and Selected (Checked) State */
+.quick-add-modal__content .variant-option__button-label:hover,
+.quick-add-modal__content .variant-option__button-label--has-swatch:hover,
+.quick-add-modal__content .variant-option__button-label:has(:checked),
+.quick-add-modal__content .variant-option__button-label--has-swatch:has(:checked),
+.quick-add-modal__content .variant-option__button-label:has(input:checked),
+.quick-add-modal__content .variant-option__button-label--has-swatch:has(input:checked),
+.quick-add-modal__content .variant-option__button-label:has([data-current-checked="true"]),
+.quick-add-modal__content .variant-option__button-label--has-swatch:has([data-current-checked="true"]) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
   font-weight: 500 !important;
+  z-index: 3 !important;
+}
+
+.quick-add-modal__content .variant-option__button-label:hover .variant-option__button-label__text,
+.quick-add-modal__content .variant-option__button-label--has-swatch:hover .variant-option__button-label__text,
+.quick-add-modal__content .variant-option__button-label:has(:checked) .variant-option__button-label__text,
+.quick-add-modal__content .variant-option__button-label--has-swatch:has(:checked) .variant-option__button-label__text,
+.quick-add-modal__content .variant-option__button-label:has(input:checked) .variant-option__button-label__text,
+.quick-add-modal__content .variant-option__button-label--has-swatch:has(input:checked) .variant-option__button-label__text,
+.quick-add-modal__content .variant-option__button-label:has([data-current-checked="true"]) .variant-option__button-label__text,
+.quick-add-modal__content .variant-option__button-label--has-swatch:has([data-current-checked="true"]) .variant-option__button-label__text {
+  color: #ffffff !important;
 }
 
 /* Swatch vertical stripe on left */
@@ -3069,7 +3028,9 @@ fieldset.variant-option--swatches legend {
   display: block !important;
   z-index: 3 !important;
 }
-
+.quick-add-modal__content .variant-option__button-label::before {
+  border: unset !important;
+}
 /* Fallback color vertical stripes */
 .quick-add-modal__content .variant-option__button-label:has(input[value="Black" i])::before {
   content: '';
@@ -3077,7 +3038,7 @@ fieldset.variant-option--swatches legend {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 8px;
+  width: 4px;
   background-color: #000000;
 }
 .quick-add-modal__content .variant-option__button-label:has(input[value="White" i])::before {
@@ -3086,9 +3047,8 @@ fieldset.variant-option--swatches legend {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 8px;
+  width: 4px;
   background-color: #ffffff;
-  border-right: 1px solid #e0e0e0;
 }
 .quick-add-modal__content .variant-option__button-label:has(input[value="Red" i])::before {
   content: '';
@@ -3096,7 +3056,7 @@ fieldset.variant-option--swatches legend {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 8px;
+  width: 4px;
   background-color: #a31533;
 }
 .quick-add-modal__content .variant-option__button-label:has(input[value="Grey" i], input[value="Gray" i])::before {
@@ -3105,14 +3065,13 @@ fieldset.variant-option--swatches legend {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 8px;
+  width: 4px;
   background-color: #888888;
 }
 
 /* --------------------------------------------------------------------------
-   Row 3: Size Dropdown (Component 213, order: 2)
+   Row 3: Size Dropdown (Component 213, order: 2) - Modal Scoped Only
    -------------------------------------------------------------------------- */
-.variant-option--size-dropdown,
 .quick-add-modal__content .variant-option--size-dropdown {
   order: 2 !important;
   height: 64px !important;
@@ -3126,7 +3085,6 @@ fieldset.variant-option--swatches legend {
   border: none !important;
 }
 
-.variant-option--size-dropdown label,
 .quick-add-modal__content .variant-option--size-dropdown label {
   font-family: inherit !important;
   font-size: 15px !important;
@@ -3138,7 +3096,6 @@ fieldset.variant-option--swatches legend {
   text-transform: capitalize !important;
 }
 
-.variant-option--size-dropdown .variant-option__select-wrapper,
 .quick-add-modal__content .variant-option--size-dropdown .variant-option__select-wrapper {
   position: relative !important;
   height: 42px !important;
@@ -3154,7 +3111,6 @@ fieldset.variant-option--swatches legend {
   width: 100% !important;
 }
 
-.variant-option--size-dropdown .variant-option__select,
 .quick-add-modal__content .variant-option--size-dropdown .variant-option__select {
   width: 100% !important;
   height: 100% !important;
@@ -3174,7 +3130,6 @@ fieldset.variant-option--swatches legend {
   line-height: 42px !important;
 }
 
-.variant-option--size-dropdown .variant-option__caret-box,
 .quick-add-modal__content .variant-option--size-dropdown .variant-option__caret-box {
   position: absolute !important;
   right: 0 !important;
@@ -3190,7 +3145,6 @@ fieldset.variant-option--swatches legend {
   background-color: #ffffff !important;
 }
 
-.variant-option--size-dropdown .variant-option__caret-box svg,
 .quick-add-modal__content .variant-option--size-dropdown .variant-option__caret-box svg {
   width: 14px !important;
   height: 8px !important;
@@ -3235,54 +3189,90 @@ fieldset.variant-option--swatches legend {
 }
 
 .quick-add-modal__content button.add-to-cart-button,
+.quick-add-modal__content button.tisso-btn,
 .quick-add-modal__content button[type="submit"] {
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 12px !important;
+  gap: 10px !important;
   width: 100% !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  background-color: #000000 !important;
-  color: #ffffff !important;
-  border: 1px solid #000000 !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  border: none !important;
   border-radius: 0 !important;
-  font-family: inherit !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.08em !important;
+  font-family: 'Jost', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
   text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  line-height: 20px !important;
+  white-space: nowrap !important;
   cursor: pointer !important;
   padding: 0 20px !important;
   box-sizing: border-box !important;
-  transition: background-color 0.2s ease, opacity 0.2s ease !important;
+  background-color: transparent !important;
+  background-image: linear-gradient(to right, #FFF200 50%, #000000 50%) !important;
+  background-size: 200% 100% !important;
+  background-position: right bottom !important;
+  color: #ffffff !important;
+  transition: background-position 1s ease-in-out, color 1s ease-in-out, opacity 0.2s ease !important;
 }
 
 .quick-add-modal__content button.add-to-cart-button:hover,
+.quick-add-modal__content button.tisso-btn:hover,
 .quick-add-modal__content button[type="submit"]:hover {
-  background-color: #222222 !important;
+  background-position: left bottom !important;
+  color: #000000 !important;
 }
 
-.quick-add-modal__content button.add-to-cart-button .tisso-btn__label {
+.quick-add-modal__content button.add-to-cart-button .add-to-cart-icon,
+.quick-add-modal__content button.add-to-cart-button .add-to-cart__added {
+  display: none !important;
+}
+
+.quick-add-modal__content .tisso-btn__label {
   text-transform: uppercase !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.08em !important;
+  color: inherit !important;
+  letter-spacing: 0.06em !important;
+  font-family: 'Jost', sans-serif !important;
+  font-size: 16px !important;
+  line-height: 20px !important;
+  transition: color 1s ease-in-out !important;
 }
 
-.quick-add-modal__content button.add-to-cart-button .tisso-btn__arrow,
-.quick-add-modal__content button[type="submit"] svg {
+.quick-add-modal__content .tisso-btn__arrow {
   display: inline-flex !important;
   align-items: center !important;
-  stroke: #ffffff !important;
-  color: #ffffff !important;
+  justify-content: center !important;
+  transition: transform 0.2s ease, color 1s ease-in-out !important;
+  color: inherit !important;
 }
 
-.quick-add-modal__content button.add-to-cart-button:not(:has(.tisso-btn__arrow, svg))::after {
+.quick-add-modal__content button.add-to-cart-button:hover .tisso-btn__arrow,
+.quick-add-modal__content button.tisso-btn:hover .tisso-btn__arrow {
+  transform: translateX(4px) !important;
+}
+
+.quick-add-modal__content .tisso-btn__arrow svg,
+.quick-add-modal__content .tisso-btn__arrow svg path,
+.quick-add-modal__content button[type="submit"] .tisso-btn__arrow svg path {
+  stroke: currentColor !important;
+  fill: none !important;
+  transition: stroke 1s ease-in-out !important;
+}
+
+.quick-add-modal__content button.add-to-cart-button:not(:has(.tisso-btn__arrow))::after {
   content: '→';
   font-size: 18px;
   font-weight: 400;
   margin-left: 8px;
+  display: inline-block !important;
+  color: inherit !important;
+  transition: transform 0.2s ease !important;
+}
+
+.quick-add-modal__content button.add-to-cart-button:hover:not(:has(.tisso-btn__arrow))::after {
+  transform: translateX(4px) !important;
 }
 
 .quick-add-modal__content .view-more-details__wrapper,
@@ -3348,68 +3338,140 @@ fieldset.variant-option--swatches legend {
   display: block !important;
 }
 
-/* 1. Black Leather Bag */
-product-card[data-product-id="10610836734136"] button.quick-add__button,
-product-card:has(a[href*="black-leather-bag"]) button.quick-add__button {
-  top: 56.0% !important;
-  left: 61.3% !important;
-  right: auto !important;
-  bottom: auto !important;
-  inset-inline-end: auto !important;
-  inset-block-end: auto !important;
+/* Desktop hotspot positions (>= 750px) - Match Desktop Figma details */
+@media screen and (min-width: 750px) {
+  /* 1. Black Leather Bag */
+  product-card[data-product-id="10610836734136"] button.quick-add__button,
+  product-card:has(a[href*="black-leather-bag"]) button.quick-add__button {
+    top: 56.0% !important;
+    left: 61.3% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
+
+  /* 2. Blue Silk Tuxedo */
+  product-card[data-product-id="10610836406456"] button.quick-add__button,
+  product-card:has(a[href*="blue-silk-tuxedo"]) button.quick-add__button {
+    top: 52.2% !important;
+    left: 84.3% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
+
+  /* 3. Chequered Red Shirt */
+  product-card[data-product-id="10610836570296"] button.quick-add__button,
+  product-card:has(a[href*="chequered-red-shirt"]) button.quick-add__button {
+    top: 20.9% !important;
+    left: 62.6% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
+
+  /* 4. Classic Leather Jacket */
+  product-card[data-product-id="10610837029048"] button.quick-add__button,
+  product-card:has(a[href*="classic-leather-jacket"]) button.quick-add__button {
+    top: 18.6% !important;
+    left: 72.0% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
+
+  /* 5. Classic Varsity Top */
+  product-card[data-product-id="10610837192888"] button.quick-add__button,
+  product-card:has(a[href*="classic-varsity-top"]) button.quick-add__button {
+    top: 26.0% !important;
+    left: 51.3% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
+
+  /* 6. Dark Denim Top */
+  product-card[data-product-id="10610836930744"] button.quick-add__button,
+  product-card:has(a[href*="dark-denim-top"]) button.quick-add__button {
+    top: 39.4% !important;
+    left: 76.0% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
 }
 
-/* 2. Blue Silk Tuxedo */
-product-card[data-product-id="10610836406456"] button.quick-add__button,
-product-card:has(a[href*="blue-silk-tuxedo"]) button.quick-add__button {
-  top: 52.2% !important;
-  left: 84.3% !important;
-  right: auto !important;
-  bottom: auto !important;
-  inset-inline-end: auto !important;
-  inset-block-end: auto !important;
-}
+/* Mobile hotspot positions (< 750px) - Match Figma Mobile (all in upper-right shoulder/collar area) */
+@media screen and (max-width: 749px) {
+  /* 1. Black Leather Bag */
+  product-card[data-product-id="10610836734136"] button.quick-add__button,
+  product-card:has(a[href*="black-leather-bag"]) button.quick-add__button {
+    top: 14% !important;
+    left: 70% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
 
-/* 3. Chequered Red Shirt */
-product-card[data-product-id="10610836570296"] button.quick-add__button,
-product-card:has(a[href*="chequered-red-shirt"]) button.quick-add__button {
-  top: 20.9% !important;
-  left: 62.6% !important;
-  right: auto !important;
-  bottom: auto !important;
-  inset-inline-end: auto !important;
-  inset-block-end: auto !important;
-}
+  /* 2. Blue Silk Tuxedo */
+  product-card[data-product-id="10610836406456"] button.quick-add__button,
+  product-card:has(a[href*="blue-silk-tuxedo"]) button.quick-add__button {
+    top: 14% !important;
+    left: 66% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
 
-/* 4. Classic Leather Jacket */
-product-card[data-product-id="10610837029048"] button.quick-add__button,
-product-card:has(a[href*="classic-leather-jacket"]) button.quick-add__button {
-  top: 18.6% !important;
-  left: 72.0% !important;
-  right: auto !important;
-  bottom: auto !important;
-  inset-inline-end: auto !important;
-  inset-block-end: auto !important;
-}
+  /* 3. Chequered Red Shirt */
+  product-card[data-product-id="10610836570296"] button.quick-add__button,
+  product-card:has(a[href*="chequered-red-shirt"]) button.quick-add__button {
+    top: 18% !important;
+    left: 69% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
 
-/* 5. Classic Varsity Top */
-product-card[data-product-id="10610837192888"] button.quick-add__button,
-product-card:has(a[href*="classic-varsity-top"]) button.quick-add__button {
-  top: 26.0% !important;
-  left: 51.3% !important;
-  right: auto !important;
-  bottom: auto !important;
-  inset-inline-end: auto !important;
-  inset-block-end: auto !important;
-}
+  /* 4. Classic Leather Jacket */
+  product-card[data-product-id="10610837029048"] button.quick-add__button,
+  product-card:has(a[href*="classic-leather-jacket"]) button.quick-add__button {
+    top: 18% !important;
+    left: 66% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
 
-/* 6. Dark Denim Top */
-product-card[data-product-id="10610836930744"] button.quick-add__button,
-product-card:has(a[href*="dark-denim-top"]) button.quick-add__button {
-  top: 39.4% !important;
-  left: 76.0% !important;
-  right: auto !important;
-  bottom: auto !important;
-  inset-inline-end: auto !important;
-  inset-block-end: auto !important;
+  /* 5. Classic Varsity Top */
+  product-card[data-product-id="10610837192888"] button.quick-add__button,
+  product-card:has(a[href*="classic-varsity-top"]) button.quick-add__button {
+    top: 17% !important;
+    left: 68% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
+
+  /* 6. Dark Denim Top */
+  product-card[data-product-id="10610836930744"] button.quick-add__button,
+  product-card:has(a[href*="dark-denim-top"]) button.quick-add__button {
+    top: 17% !important;
+    left: 66% !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset-inline-end: auto !important;
+    inset-block-end: auto !important;
+  }
 }

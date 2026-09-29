@@ -31,7 +31,7 @@
     name="add"
     ref="addToCartButton"
     on:click="/handleClick"
-    class="{% if is_tisso %}tisso-btn tisso-btn--black w-full {% else %}button {% endif %}{{ class }}"
+    class="button {{ class }}"
     {% if data_testid %}
       data-testid="{{ data_testid }}"
     {% endif %}
@@ -39,29 +39,20 @@
       disabled
     {% endunless %}
   >
-    {% if is_tisso %}
-      <span class="tisso-btn__label">{{ add_to_cart_text | default: default_add_to_cart_text }}</span>
-      <span class="tisso-btn__arrow" aria-hidden="true">
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 1L15 6M15 6L10 11M15 6H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </span>
-    {% else %}
-      {% if show_icon %}
-        <span
-          aria-hidden="true"
-          class="svg-wrapper add-to-cart-icon"
-        >
-          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </span>
-      {% endif %}
-      {{- add_to_cart_text | default: default_add_to_cart_text -}}
-      {% comment %} checkmark burst markup {% endcomment %}
-      <span class="add-to-cart__added">
-        <span class="svg-wrapper add-to-cart__added-icon">
-          {{- 'icon-checkmark-burst.svg' | inline_asset_content -}}
-        </span>
+    {% if show_icon %}
+      <span
+        aria-hidden="true"
+        class="svg-wrapper add-to-cart-icon"
+      >
+        {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
       </span>
     {% endif %}
+    {{- add_to_cart_text | default: default_add_to_cart_text -}}
+    {% comment %} checkmark burst markup {% endcomment %}
+    <span class="add-to-cart__added">
+      <span class="svg-wrapper add-to-cart__added-icon">
+        {{- 'icon-checkmark-burst.svg' | inline_asset_content -}}
+      </span>
+    </span>
   </button>
 </add-to-cart-component>

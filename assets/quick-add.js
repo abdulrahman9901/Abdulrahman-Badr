@@ -285,6 +285,7 @@ export class QuickAddComponent extends Component {
         productDetails.appendChild(variantPicker);
       }
       if (buyButtonsBlock) {
+        this.#setupTissoButton(buyButtonsBlock);
         productDetails.appendChild(buyButtonsBlock);
       }
     }
@@ -295,7 +296,38 @@ export class QuickAddComponent extends Component {
 
     morph(modalContent, productGrid);
 
+    this.#setupTissoButton(modalContent);
     this.#syncVariantSelection(modalContent);
+  }
+
+  /**
+   * Transforms the add-to-cart button inside the quick-add popup into the TISSO signature arrow button
+   * @param {Element} container - The container element
+   */
+  #setupTissoButton(container) {
+    if (!container) return;
+    const atcBtn = container.querySelector('button.add-to-cart-button') || container.querySelector('button[type="submit"][name="add"]');
+    if (!atcBtn) return;
+
+    atcBtn.className = 'tisso-btn tisso-btn--black w-full add-to-cart-button button';
+
+    const cartIcon = atcBtn.querySelector('.add-to-cart-icon');
+    if (cartIcon) cartIcon.remove();
+
+    const addedIcon = atcBtn.querySelector('.add-to-cart__added');
+    if (addedIcon) addedIcon.remove();
+
+    if (!atcBtn.querySelector('.tisso-btn__arrow')) {
+      const label = atcBtn.querySelector('.tisso-btn__label')?.textContent?.trim() || atcBtn.textContent.trim().replace(/\s+/g, ' ') || 'Add to cart';
+      atcBtn.innerHTML = `
+        <span class="tisso-btn__label">${label}</span>
+        <span class="tisso-btn__arrow" aria-hidden="true">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 1L15 6M15 6L10 11M15 6H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      `;
+    }
   }
 
   /**
