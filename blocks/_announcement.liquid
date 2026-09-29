@@ -30,7 +30,12 @@
     aria-hidden="{% if block_index == 0 %}false{% else %}true{% endif %}"
   >
     <p class="announcement-bar__text">
-      {{ block.settings.text }}
+      {%- if block_settings.text_mobile != blank -%}
+        <span class="announcement-text--desktop">{{ block.settings.text }}</span>
+        <span class="announcement-text--mobile">{{ block.settings.text_mobile }}</span>
+      {%- else -%}
+        {{ block.settings.text }}
+      {%- endif -%}
     </p>
 
     {% if block_settings.link != blank %}
@@ -56,6 +61,12 @@
       "id": "text",
       "label": "t:settings.text",
       "default": "t:text_defaults.shop_our_latest_arrivals"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "text_mobile",
+      "label": "Text (mobile)",
+      "info": "Optional text shown on smaller screens"
     },
     {
       "type": "url",

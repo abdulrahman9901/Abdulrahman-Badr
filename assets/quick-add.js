@@ -235,34 +235,58 @@ export class QuickAddComponent extends Component {
 
     if (!productGrid || !modalContent) return;
 
-    if (isMobileBreakpoint()) {
-      const productDetails = productGrid.querySelector('.product-details');
-      const productFormComponent = productGrid.querySelector('product-form-component');
-      const variantPicker = productGrid.querySelector('variant-picker');
-      const productPrice = productGrid.querySelector('product-price');
+    const productDetails = productGrid.querySelector('.product-details');
+    const productMedia = productGrid.querySelector('.product-information__media');
+    const buyButtonsBlock = productGrid.querySelector('.buy-buttons-block') || productGrid.querySelector('product-form-component');
+    const variantPicker = productGrid.querySelector('variant-picker');
+    const productPrice = productGrid.querySelector('product-price');
+    const productDescription = productGrid.querySelector('rte-formatter') ||
+                               productGrid.querySelector('.product__description') ||
+                               productGrid.querySelector('[data-testid="product-description"]');
+
+    if (productDetails) {
+      // 1. Title and price (and description) grouped in one div/element
+      const titlePriceWrapper = document.createElement('div');
+      titlePriceWrapper.classList.add('product-title-price', 'product-header');
+
+      const existingTitle = productGrid.querySelector('.view-product-title a')?.textContent?.trim() ||
+                            productGrid.querySelector('h1')?.textContent?.trim() ||
+                            '';
       const productTitle = document.createElement('a');
-      productTitle.textContent = this.dataset.productTitle || '';
-
-      // Make product title as a link to the product page
+      productTitle.textContent = this.dataset.productTitle || existingTitle;
       productTitle.href = this.productPageUrl;
+      productTitle.classList.add('product-title-link');
 
-      const productHeader = document.createElement('div');
-      productHeader.classList.add('product-header');
-
-      productHeader.appendChild(productTitle);
+      titlePriceWrapper.appendChild(productTitle);
       if (productPrice) {
-        productHeader.appendChild(productPrice);
+        titlePriceWrapper.appendChild(productPrice);
       }
-      productGrid.appendChild(productHeader);
+      if (productDescription) {
+        titlePriceWrapper.appendChild(productDescription);
+      }
+
+      // 2. Header row that moves the thumbnail inside product-details alongside the title & price element
+      const headerRow = document.createElement('div');
+      headerRow.classList.add('product-header-row');
+
+      if (productMedia) {
+        headerRow.appendChild(productMedia);
+      }
+      headerRow.appendChild(titlePriceWrapper);
+
+      // 3. Populate product-details with the 4-row layout:
+      // Row 1: Header row (thumbnail + title & price in one element)
+      // Row 2: Variant picker (Color swatches + Size dropdown)
+      // Row 4: Buy buttons block (Add to cart button)
+      productDetails.innerHTML = '';
+      productDetails.appendChild(headerRow);
 
       if (variantPicker) {
-        productGrid.appendChild(variantPicker);
+        productDetails.appendChild(variantPicker);
       }
-      if (productFormComponent) {
-        productGrid.appendChild(productFormComponent);
+      if (buyButtonsBlock) {
+        productDetails.appendChild(buyButtonsBlock);
       }
-
-      productDetails?.remove();
     }
 
     // Sync the view-event-payload attribute and morph children into the modal's product-component

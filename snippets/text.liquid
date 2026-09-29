@@ -98,7 +98,12 @@
   </div>
 {% elsif plain_text != blank %}
   <{{ element }} {{ attributes | strip_newlines | strip }}>
-    {{ block.settings.text }}
+    {%- if block.settings.text_mobile != blank -%}
+      <div class="text-content--desktop">{{ block.settings.text }}</div>
+      <div class="text-content--mobile">{{ block.settings.text_mobile }}</div>
+    {%- else -%}
+      {{ block.settings.text }}
+    {%- endif -%}
   </{{ element }}>
 {% endif %}
 

@@ -84,6 +84,16 @@
     content_for 'block', type: '_header-logo', id: 'header-logo'
   endcapture
 
+  capture drawer_menu
+    content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'mobile'
+  endcapture
+
+  if drawer_menu == blank
+    capture drawer_menu
+      render 'header-drawer', linklist: linklists.main-menu, class: 'header-drawer--mobile'
+    endcapture
+  endif
+
   assign has_navigation_bar = false
   if navigation_bar contains 'data-navigation-bar-enabled'
     assign has_navigation_bar = true
@@ -398,7 +408,7 @@
 
       case row
         when 'top'
-          assign first = ''
+          assign first = drawer_menu
 
           if bottom_row_blocks.size > 0 and section.settings.divider_size == 'page-width'
             assign class = class | append: ' divider--page-width'

@@ -330,11 +330,20 @@
     <img
       src="{{ 'Hero banner.png' | asset_url }}"
       alt="The Gift Guide"
-      class="hero__media hero__media--default-banner"
+      class="hero__media hero__media--default-banner hero__media--default-desktop"
       loading="eager"
       fetchpriority="high"
       width="2880"
       height="1560"
+    >
+    <img
+      src="{{ 'hero-banner-mobile-v2.png' | asset_url }}"
+      alt="The Gift Guide"
+      class="hero__media hero__media--default-banner hero__media--default-mobile"
+      loading="eager"
+      fetchpriority="high"
+      width="1024"
+      height="394"
     >
   {%- endif -%}
 {% endcapture %}
