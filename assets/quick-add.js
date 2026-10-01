@@ -235,34 +235,59 @@ export class QuickAddComponent extends Component {
 
     if (!productGrid || !modalContent) return;
 
-    if (isMobileBreakpoint()) {
-      const productDetails = productGrid.querySelector('.product-details');
-      const productFormComponent = productGrid.querySelector('product-form-component');
-      const variantPicker = productGrid.querySelector('variant-picker');
-      const productPrice = productGrid.querySelector('product-price');
+    const productDetails = productGrid.querySelector('.product-details');
+    const productMedia = productGrid.querySelector('.product-information__media');
+    const buyButtonsBlock = productGrid.querySelector('.buy-buttons-block') || productGrid.querySelector('product-form-component');
+    const variantPicker = productGrid.querySelector('variant-picker');
+    const productPrice = productGrid.querySelector('product-price');
+    const productDescription = productGrid.querySelector('rte-formatter') ||
+                               productGrid.querySelector('.product__description') ||
+                               productGrid.querySelector('[data-testid="product-description"]');
+
+    if (productDetails) {
+      // 1. Title and price (and description) grouped in one div/element
+      const titlePriceWrapper = document.createElement('div');
+      titlePriceWrapper.classList.add('product-title-price', 'product-header');
+
+      const existingTitle = productGrid.querySelector('.view-product-title a')?.textContent?.trim() ||
+                            productGrid.querySelector('h1')?.textContent?.trim() ||
+                            '';
       const productTitle = document.createElement('a');
-      productTitle.textContent = this.dataset.productTitle || '';
-
-      // Make product title as a link to the product page
+      productTitle.textContent = this.dataset.productTitle || existingTitle;
       productTitle.href = this.productPageUrl;
+      productTitle.classList.add('product-title-link');
 
-      const productHeader = document.createElement('div');
-      productHeader.classList.add('product-header');
-
-      productHeader.appendChild(productTitle);
+      titlePriceWrapper.appendChild(productTitle);
       if (productPrice) {
-        productHeader.appendChild(productPrice);
+        titlePriceWrapper.appendChild(productPrice);
       }
-      productGrid.appendChild(productHeader);
+      if (productDescription) {
+        titlePriceWrapper.appendChild(productDescription);
+      }
+
+      // 2. Header row that moves the thumbnail inside product-details alongside the title & price element
+      const headerRow = document.createElement('div');
+      headerRow.classList.add('product-header-row');
+
+      if (productMedia) {
+        headerRow.appendChild(productMedia);
+      }
+      headerRow.appendChild(titlePriceWrapper);
+
+      // 3. Populate product-details with the 4-row layout:
+      // Row 1: Header row (thumbnail + title & price in one element)
+      // Row 2: Variant picker (Color swatches + Size dropdown)
+      // Row 4: Buy buttons block (Add to cart button)
+      productDetails.innerHTML = '';
+      productDetails.appendChild(headerRow);
 
       if (variantPicker) {
-        productGrid.appendChild(variantPicker);
+        productDetails.appendChild(variantPicker);
       }
-      if (productFormComponent) {
-        productGrid.appendChild(productFormComponent);
+      if (buyButtonsBlock) {
+        this.#setupTissoButton(buyButtonsBlock);
+        productDetails.appendChild(buyButtonsBlock);
       }
-
-      productDetails?.remove();
     }
 
     // Sync the view-event-payload attribute and morph children into the modal's product-component
@@ -271,7 +296,137 @@ export class QuickAddComponent extends Component {
 
     morph(modalContent, productGrid);
 
+    this.#setupTissoButton(modalContent);
+    this.#setupModalVariantPicker(modalContent);
     this.#syncVariantSelection(modalContent);
+  }
+
+  /**
+   * Sets up variant picker options inside the quick-add modal:
+   * - Adds text labels to color swatches if needed
+   * - Converts Size options into a Figma dropdown (Component 213)
+   * @param {Element} container - The container element
+   */
+  #setupModalVariantPicker(container) {
+    if (!container) return;
+
+    // 1. Swatches: Ensure variant label text is displayed inside the button label
+    container.querySelectorAll('.variant-option__button-label--has-swatch').forEach((label) => {
+      if (!label.querySelector('.variant-option__button-label__text')) {
+        const input = label.querySelector('input');
+        if (input && input.value) {
+          const textSpan = document.createElement('span');
+          textSpan.className = 'variant-option__button-label__text';
+          textSpan.textContent = input.value;
+          label.appendChild(textSpan);
+        }
+      }
+    });
+
+    // 2. Size: Convert size fieldset into a clean dropdown
+    const sizeFieldset = Array.from(container.querySelectorAll('fieldset.variant-option')).find((fs) => {
+      const legend = fs.querySelector('legend');
+      return legend && legend.textContent.trim().toLowerCase().includes('size');
+    });
+
+    if (sizeFieldset && !sizeFieldset.classList.contains('variant-option--size-dropdown-initialized')) {
+      sizeFieldset.classList.add('variant-option--size-dropdown-initialized');
+
+      const legendText = sizeFieldset.querySelector('legend')?.childNodes[0]?.textContent?.trim() || 'Size';
+      const radioInputs = Array.from(sizeFieldset.querySelectorAll('input[type="radio"]'));
+
+      if (radioInputs.length > 0) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'variant-option variant-option--dropdowns variant-option--size-dropdown';
+        wrapper.dataset.componentId = '213';
+
+        const label = document.createElement('label');
+        label.textContent = legendText;
+        wrapper.appendChild(label);
+
+        const selectWrapper = document.createElement('div');
+        selectWrapper.className = 'variant-option__select-wrapper';
+
+        const select = document.createElement('select');
+        select.className = 'variant-option__select';
+        select.name = radioInputs[0].name;
+
+        const defaultOpt = document.createElement('option');
+        defaultOpt.value = '';
+        defaultOpt.disabled = true;
+        defaultOpt.textContent = 'Choose your size';
+        select.appendChild(defaultOpt);
+
+        let hasSelected = false;
+        radioInputs.forEach((radio) => {
+          const opt = document.createElement('option');
+          opt.value = radio.value;
+          opt.textContent = radio.value;
+          if (radio.checked) {
+            opt.selected = true;
+            hasSelected = true;
+          }
+          select.appendChild(opt);
+        });
+
+        if (!hasSelected) {
+          defaultOpt.selected = true;
+        }
+
+        select.addEventListener('change', () => {
+          const chosenRadio = radioInputs.find((r) => r.value === select.value);
+          if (chosenRadio) {
+            chosenRadio.checked = true;
+            chosenRadio.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+
+        const caretBox = document.createElement('div');
+        caretBox.className = 'variant-option__caret-box';
+        caretBox.innerHTML = `
+          <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 0-.708" fill="currentColor"/>
+          </svg>
+        `;
+
+        selectWrapper.appendChild(select);
+        selectWrapper.appendChild(caretBox);
+        wrapper.appendChild(selectWrapper);
+
+        sizeFieldset.style.display = 'none';
+        sizeFieldset.parentNode.insertBefore(wrapper, sizeFieldset);
+      }
+    }
+  }
+
+  /**
+   * Transforms the add-to-cart button inside the quick-add popup into the TISSO signature arrow button
+   * @param {Element} container - The container element
+   */
+  #setupTissoButton(container) {
+    if (!container) return;
+    const atcBtn = container.querySelector('button.add-to-cart-button') || container.querySelector('button[type="submit"][name="add"]');
+    if (!atcBtn) return;
+
+    atcBtn.className = 'tisso-btn tisso-btn--black w-full add-to-cart-button button';
+
+    const cartIcon = atcBtn.querySelector('.add-to-cart-icon');
+    if (cartIcon) cartIcon.remove();
+
+    const addedIcon = atcBtn.querySelector('.add-to-cart__added');
+    if (addedIcon) addedIcon.remove();
+
+    if (!atcBtn.querySelector('.tisso-btn__arrow')) {
+      const label = atcBtn.querySelector('.tisso-btn__label')?.textContent?.trim() || atcBtn.textContent.trim().replace(/\s+/g, ' ') || 'Add to cart';
+      atcBtn.innerHTML = `
+        <span class="tisso-btn__label">${label}</span>
+        <span class="tisso-btn__arrow" aria-hidden="true">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 1L15 6M15 6L10 11M15 6H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      `;
+    }
   }
 
   /**

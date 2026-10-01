@@ -20,7 +20,7 @@
   assign center = ''
   assign right = ''
 
-  if first != blank
+  if first != blank and row == 'top'
     assign left = 'first '
   endif
 
@@ -31,8 +31,15 @@
     assign item_column = settings[column_key] | default: 'left'
 
     case item
+      when 'promo_message'
+        assign item_column = settings.promo_message_position | default: 'center'
+        assign item_row = settings.promo_message_row | default: 'top'
       when 'actions'
         assign item_column = 'right'
+        assign item_row = 'top'
+      when 'logo'
+        assign item_column = settings.logo_position | default: 'left'
+        assign item_row = 'top'
     endcase
 
     if item_row == row
@@ -76,6 +83,12 @@
               {{ first }}
             {% when 'logo' %}
               {{ logo }}
+            {% when 'promo_message' %}
+              {%- if settings.promo_message != blank and settings.show_promo_message != false -%}
+                <div class="header__promo-message">
+                  {{ settings.promo_message }}
+                </div>
+              {%- endif -%}
             {% when 'menu' %}
               {{ menu }}
             {% when 'localization' %}
@@ -92,3 +105,4 @@
     </div>
   {%- endif -%}
 {%- endfor -%}
+

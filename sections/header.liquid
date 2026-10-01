@@ -1,13 +1,13 @@
 
 
 {% liquid
-  assign order = 'logo,menu,localization,search,drawer_search,actions'
+  assign order = 'logo,promo_message,menu,localization,search,drawer_search,actions'
 
   if shop.customer_accounts_enabled
-    assign order = 'drawer_search,logo,menu,localization,search,actions'
+    assign order = 'drawer_search,logo,promo_message,menu,localization,search,actions'
   endif
 
-  assign rows = 'top,bottom' | split: ','
+  assign rows = 'top' | split: ','
   assign search_style = 'none'
 
   if section.settings.show_search
@@ -84,17 +84,15 @@
     content_for 'block', type: '_header-logo', id: 'header-logo'
   endcapture
 
-  capture menu
-    content_for 'block', type: '_header-menu', id: 'header-menu'
-  endcapture
-
   capture drawer_menu
     content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'mobile'
   endcapture
 
-  capture navigation_bar
-    content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
-  endcapture
+  if drawer_menu == blank
+    capture drawer_menu
+      render 'header-drawer', linklist: linklists.main-menu, class: 'header-drawer--mobile'
+    endcapture
+  endif
 
   assign has_navigation_bar = false
   if navigation_bar contains 'data-navigation-bar-enabled'
@@ -102,7 +100,11 @@
   endif
 
   capture actions
-    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
+    if section.settings.show_header_cta and section.settings.header_cta_label != blank
+      assign cta_url = section.settings.header_cta_url | default: '#gift-guide'
+      assign cta_variant = section.settings.header_cta_variant | default: 'yellow'
+      render 'custom-arrow-button', label: section.settings.header_cta_label, url: cta_url, variant: cta_variant
+    endif
   endcapture
 
   if shop.customer_accounts_enabled
@@ -113,23 +115,29 @@
   if section.settings.localization_position == 'left'
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,localization,menu,actions'
+        assign order = 'drawer_search,logo,promo_message,search,localization,menu,actions'
       else
-        assign order = 'logo,search,localization,menu,drawer_search,actions'
+        assign order = 'logo,promo_message,search,localization,menu,drawer_search,actions'
       endif
     else
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,localization,menu,search,actions'
+        assign order = 'drawer_search,logo,promo_message,localization,menu,search,actions'
       else
-        assign order = 'logo,localization,menu,search,drawer_search,actions'
+        assign order = 'logo,promo_message,localization,menu,search,drawer_search,actions'
       endif
     endif
   else
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,menu,localization,actions'
+        assign order = 'drawer_search,logo,promo_message,search,menu,localization,actions'
       else
-        assign order = 'logo,search,menu,localization,drawer_search,actions'
+        assign order = 'logo,promo_message,search,menu,localization,drawer_search,actions'
+      endif
+    else
+      if shop.customer_accounts_enabled
+        assign order = 'drawer_search,logo,promo_message,menu,localization,search,actions'
+      else
+        assign order = 'logo,promo_message,menu,localization,search,drawer_search,actions'
       endif
     endif
   endif
@@ -162,30 +170,33 @@
     assign show_country = false
   endif
 
-  assign bottom_row_blocks = ''
+  assign bottom_row_blocks_string = ''
 
   if section.settings.menu_row == 'bottom'
-    assign bottom_row_blocks = bottom_row_blocks | append: 'menu,'
+    assign bottom_row_blocks_string = bottom_row_blocks_string | append: 'menu,'
   endif
 
   if section.settings.show_search
     if section.settings.search_row == 'bottom'
-      assign bottom_row_blocks = bottom_row_blocks | append: 'search,'
+      assign bottom_row_blocks_string = bottom_row_blocks_string | append: 'search,'
     endif
   endif
 
   if section.settings.show_country or section.settings.show_language
     if section.settings.localization_row == 'bottom'
-      assign bottom_row_blocks = bottom_row_blocks | append: 'localization,'
+      assign bottom_row_blocks_string = bottom_row_blocks_string | append: 'localization,'
     endif
   endif
 
-  assign bottom_row_blocks = bottom_row_blocks | split: ',' | compact
-
   assign has_second_row = false
-  if bottom_row_blocks.size > 0
+  if bottom_row_blocks_string != ''
     assign has_second_row = true
+    assign rows = 'top,bottom' | split: ','
+  else
+    assign rows = 'top' | split: ','
   endif
+
+  assign bottom_row_blocks = bottom_row_blocks_string | split: ',' | compact
 
   if section.settings.section_height == 'compact'
     assign header_height_class = ' header--compact'
@@ -1022,11 +1033,6 @@
     --header-padding: var(--padding-2xs);
   }
 
-  .header__columns {
-    --padding-block-start: var(--header-padding);
-    --padding-block-end: var(--header-padding);
-  }
-
   .header:not(.header--compact) .header__row--bottom {
     --header-padding: var(--padding-xs);
   }
@@ -1249,6 +1255,55 @@
   "tag": "header",
   "class": "header-section",
   "settings": [
+    {
+      "type": "text",
+      "id": "promo_message",
+      "label": "Center Promotional Message",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo_message",
+      "label": "Show Promotional Message",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Call to Action Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header_cta",
+      "label": "Show CTA Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "header_cta_label",
+      "label": "CTA Button Label",
+      "default": "CHOOSE GIFT"
+    },
+    {
+      "type": "url",
+      "id": "header_cta_url",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "select",
+      "id": "header_cta_variant",
+      "label": "CTA Button Color",
+      "options": [
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "black",
+          "label": "Black"
+        }
+      ],
+      "default": "yellow"
+    },
     {
       "type": "header",
       "content": "t:content.logo"
